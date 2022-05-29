@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Random;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -48,6 +49,7 @@ public class AutotestDemoqa {
 //        $("#subjectsContainer").setValue("Physics").pressEnter();
 
         $(String.format("#hobbies-checkbox-%s", randomCheckBox)).sendKeys(" ");
+        $("#uploadPicture").uploadFile(new File("src/test/resources/Kavai.jpg"));
 
     }
 
