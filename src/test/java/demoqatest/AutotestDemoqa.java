@@ -8,8 +8,8 @@ import org.openqa.selenium.Keys;
 
 import java.io.File;
 import java.util.Random;
-import java.util.function.IntToLongFunction;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -18,15 +18,17 @@ public class AutotestDemoqa {
             _userTestSurname = "Testov",
             _userTestEmail = "test_testov@testmail.com",
             _userTestBirthMonth = "December",
+            _userTestSubject = "Chemistry",
             _userTestPicture = "src/test/resources/Kavai.jpg",
             _userTestAddress = "Улица Пушкина, дом Ленина",
             _userTestState = "Haryana",
-            _userTestCity = "Panipat";
-    long randomNumber = new Random().nextInt(1000000000) + 9000000000L;
-    int randomYear = new Random().nextInt(101) + 1900;
-    int randomDay = new Random().nextInt(27) + 1;
-    int randomRadio = new Random().nextInt(3) + 1;
-    int randomCheckBox = new Random().nextInt(3) + 1;
+            _userTestCity = "Panipat",
+            _userTestModalTitleText = "Thanks for submitting the form";
+    long _randomPhoneNumber = new Random().nextInt(1000000000) + 9000000000L;
+    int _randomYear = new Random().nextInt(101) + 1900,
+            _randomDay = new Random().nextInt(27) + 1,
+            _randomRadio = new Random().nextInt(3) + 1,
+            _randomCheckBox = new Random().nextInt(3) + 1;
 
     @BeforeAll
     static void beforeAllTests() {
@@ -43,25 +45,38 @@ public class AutotestDemoqa {
         $("#firstName").setValue(_userTestName);
         $("#lastName").setValue(_userTestSurname);
         $("#userEmail").setValue(_userTestEmail);
-        $(String.format("#gender-radio-%s", randomRadio)).sendKeys(" ");
+        $(String.format("#gender-radio-%s", _randomRadio)).sendKeys(" ");
 //      $(By.id("gender-radio-2")).sendKeys(" "); // Работает. Нужно добавить import org.openqa.selenium.By;
-        $("#userNumber").setValue(String.format("%s", randomNumber));
+        $("#userNumber").setValue(String.format("%s", _randomPhoneNumber));
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").setValue(_userTestBirthMonth);
-        $(".react-datepicker__year-select").setValue(String.format("%s", randomYear));
+        $(".react-datepicker__year-select").setValue(String.format("%s", _randomYear));
 
-        if (randomDay < 10)
-            $(String.format(".react-datepicker__day--00%s", randomDay)).click();
+        if (_randomDay < 10)
+            $(String.format(".react-datepicker__day--00%s", _randomDay)).click();
         else
-            $(String.format(".react-datepicker__day--0%s", randomDay)).click();
+            $(String.format(".react-datepicker__day--0%s", _randomDay)).click();
 
-        $(String.format("#hobbies-checkbox-%s", randomCheckBox)).sendKeys(" ");
+        $("#subjectsInput").sendKeys("Chemistry");
+        $("#subjectsInput").sendKeys(Keys.RETURN);
+        $(String.format("#hobbies-checkbox-%s", _randomCheckBox)).sendKeys(" ");
         $("#uploadPicture").uploadFile(new File(_userTestPicture));
         $("#currentAddress").setValue(_userTestAddress);
         $("#react-select-3-input").setValue(_userTestState).sendKeys(Keys.RETURN);
         $("#react-select-4-input").setValue(_userTestCity).sendKeys(Keys.RETURN);
         $("#submit").click();
-
+        $(".modal-title").shouldHave(text(_userTestModalTitleText));
+        $(".table-responsive").shouldHave(
+                text(_userTestName + " " + _userTestSurname),
+                text(_userTestEmail),
+                text(String.valueOf(_randomRadio)),
+                text(String.valueOf(_randomPhoneNumber)),
+                text(_randomDay + " " + _userTestBirthMonth + "," + _randomYear),
+                text(_userTestSubject),
+                text(String.valueOf(_randomCheckBox)),
+                text(_userTestPicture),
+                text(_userTestAddress),
+                text(_userTestState + " " + _userTestCity));
     }
 
     @AfterAll
