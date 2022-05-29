@@ -5,9 +5,17 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+import java.util.Random;
+
 import static com.codeborne.selenide.Selenide.*;
 
 public class AutotestDemoqa {
+    int randomNumber = new Random().nextInt(100000000) + 900000000;
+    int randomYear = new Random().nextInt(27) + 1;
+    int randomMonth = new Random().nextInt(12);
+    int randomDay = new Random().nextInt(101) + 1900;
+    int randomRadio = new Random().nextInt(3)+1;
 
     @BeforeAll
     static void beforeAllTests()
@@ -27,13 +35,12 @@ public class AutotestDemoqa {
         $("input[id=lastName]").setValue("Testov");
         $("input[id=userEmail]").setValue("test_testov@testmail.com");
         $("input[id=userEmail]").setValue("test_testov@testmail.com");
-        $("label[for=gender-radio-3]").click();
-
-/*      $("div[class='custom-control custom-radio custom-control-inline']").$("input[id='gender-radio-3']").click(); - не работает
-        $(By.name("gender")).selectRadio("input[id=gender-radio-3").click(); - не работает
-        $(By.name("gender")).setValue("Other").click(); - не работает
-*/
-        $("input[id=userNumber]").setValue("9876543210");
+        $(String.format("input[id=gender-radio-%s]",randomRadio)).sendKeys(" "); //Реализовал через нажатие пробелом на radio
+//      $(By.id("gender-radio-2")).sendKeys(" "); // Работает. Нужно добавить import org.openqa.selenium.By;
+        $("input[id=userNumber]").setValue(String.format("%s",randomNumber));
+        $("input[id=dateOfBirthInput]").click();
+        $("select[class=react-datepicker__month-select]").setValue(String.format("%s",randomMonth));
+        $("select[class=react-datepicker__year-select]").setValue(String.format("%s",randomYear));
     }
 
     @AfterAll
