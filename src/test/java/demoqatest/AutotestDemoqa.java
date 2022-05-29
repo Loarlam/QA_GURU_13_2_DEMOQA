@@ -8,9 +8,9 @@ import org.openqa.selenium.Keys;
 
 import java.io.File;
 import java.util.Random;
+import java.util.Timer;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class AutotestDemoqa {
@@ -20,6 +20,7 @@ public class AutotestDemoqa {
             _userTestBirthMonth = "December",
             _userTestSubject = "Chemistry",
             _userTestPicture = "src/test/resources/Kavai.jpg",
+            _userTestPictureShortPath = "Kavai.jpg",
             _userTestAddress = "Улица Пушкина, дом Ленина",
             _userTestState = "Haryana",
             _userTestCity = "Panipat",
@@ -74,13 +75,15 @@ public class AutotestDemoqa {
                 text(_randomDay + " " + _userTestBirthMonth + "," + _randomYear),
                 text(_userTestSubject),
                 text(String.valueOf(_randomCheckBox)),
-                text(_userTestPicture),
+                text(_userTestPictureShortPath),
                 text(_userTestAddress),
                 text(_userTestState + " " + _userTestCity));
     }
 
     @AfterAll
-    static void afterAllTest() {
+    static void afterAllTest() throws InterruptedException {
         Configuration.holdBrowserOpen = true;
+        Thread.sleep(10000);
+        Configuration.holdBrowserOpen = false;
     }
 }
