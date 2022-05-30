@@ -8,7 +8,6 @@ import org.openqa.selenium.Keys;
 
 import java.io.File;
 import java.util.Random;
-import java.util.Timer;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
